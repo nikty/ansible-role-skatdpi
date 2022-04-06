@@ -54,13 +54,18 @@
 `skatdpi_netflow_rate_limit`: `netflow_rate_limit`
 
 `skatdpi_configure_nat_logging`: (bool) Whether to configure NAT logging
+
 `skatdpi_ipfix_dev`: `fastdpi.conf: ipfix_dev`
+
 `skatdpi_ipfix_nat_udp_collectors`: (list) List of collectors, each one in the form as in `fastdpi.conf: ipfix_nat_udp_collectors`
+
 `skatdpi_ipfix_nat_tcp_collectors`: (list) List of collectors, each one in the form as in `fastdpi.conf: ipfix_nat_tcp_collectors`
 
 `skatdpi_configure_clickstream`: (bool) Whether to configure clickstream
+
 `skatdpi_clickstream_ipfix_interface_name`: `fastdpi.conf: ipfix_dev`
-`skatdpi_clickstream_ipfix_tcp_collectors`: (list) List of collectors, each one in the form as in `fastdpi.conf: ipfix_tcp_collectors`
+
+`skatdpi_clickstream_ipfix_tcp_collectors`: (list) List of collectors, each one in the form as in **fastdpi.conf: ipfix_tcp_collectors**
 
 `skatdpi_device_aliases`: dict of device aliases for use in `skatdpi_devices_in`, `skatdpi_devices_out`.
 * key: device name
@@ -79,6 +84,7 @@ Dict keys:
 `skatdpi_ctrl_trace`: `fastdpi.conf: ctrl_trace`
 
 `skatdpi_fastpcrf_daemon`: `fastpcrf.conf: daemon`
+
 `skatdpi_fastpcrf_verbose`: `fastpcrf.conf: verbose`
 
 `skatdpi_fastdpi_servers`: List of dicts describing fastdpi servers. This variable is used to setup `fastpcrf.conf: fdpi_server` variables
