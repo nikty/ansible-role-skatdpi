@@ -88,10 +88,16 @@ Dict keys:
 `skatdpi_fastpcrf_verbose`: `fastpcrf.conf: verbose`
 
 `skatdpi_fastdpi_servers`: List of dicts describing fastdpi servers. This variable is used to setup `fastpcrf.conf: fdpi_server` variables
+
+https://wiki.vasexperts.ru/doku.php?id=en:dpi:dpi_options:opt_bras:bras_steps:radius_auth_fastpcrf_setup:start
+
 Dict keys:
 * `ip`
 * `dev`
 * `port`
+* `params`: (dict)
+    * param
+    * value
   
 `skatdpi_radius_servers`: List of dicts describing radius servers. This variable is used to setup `fastpcrf.conf: radius_server` variables
 Dict keys:
