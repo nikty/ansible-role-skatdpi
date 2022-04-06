@@ -1,0 +1,20 @@
+- block:
+    - name: Remove profile to the system
+      command:
+        cmd: fdpi_ctrl del profile --service 11 --profile.name "{{ item.name }}"
+      become: yes
+      register: __result
+      failed_when: "'profile busy' is in __result.stdout"
+
+    - name: Add profile to the system
+      command:
+        cmd: fdpi_ctrl load profile --service 11 --profile.name "{{ item.name }}" --profile.json "{{ _nat_service_profile }}"
+      become: yes
+      when: item.state == 'present'
+  vars:
+    _nat_service_profile: >-
+      {
+        \"nat_ip_pool\": \"{{ item.config['nat_ip_pool'] }}\",
+        \"nat_tcp_max_sessions\": {{ item.config['nat_tcp_max_sessions'] | default(2000) | int }},
+        \"nat_udp_max_sessions\": {{ item.config['nat_udp_max_sessions'] | default(2000) | int }}
+      }

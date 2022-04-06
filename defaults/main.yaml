@@ -1,0 +1,97 @@
+skatdpi_install_fastpcrf: yes
+skatdpi_install_fastdpi: yes
+skatdpi_configure_fastdpi: yes
+skatdpi_configure_fastpcrf: yes
+skatdpi_enable_fastpcrf_service: yes
+skatdpi_enable_skatdpi_service: yes
+skatdpi_delete_default_users: yes
+skatdpi_default_users_list: [ 'vasexpertsmnt' ]
+
+skatdpi_vasexperts_repo_rpm: "http://vasexperts.ru/centos/{{ ansible_facts['distribution_major_version'] }}/{{ ansible_facts['architecture'] }}/vasexperts-repo-2-1.noarch.rpm"
+skatdpi_vasexperts_repo_key: "http://vasexperts.ru/centos/RPM-GPG-KEY-vasexperts.ru"
+
+skatdpi_conf_dir: /etc/dpi/
+
+skatdpi_configure_protocols_dscp: no
+skatdpi_configure_binfiles: no
+
+# Internal DB ("user data repository")
+skatdpi_udr: 1
+skatdpi_ctrl_port: 29000
+skatdpi_ctrl_dev: lo
+
+# skatdpi_scale_factor: 1
+
+# https://wiki.vasexperts.ru/doku.php?id=dpi:dpi_components:platform:dpi_config:admin_dpsk:start&s[]=num&s[]=threads
+# skatdpi_num_threads: 
+
+skatdpi_configure_censorship: false
+# https://wiki.vasexperts.ru/doku.php?id=dpi:dpi_options:opt_filtration:filtration_settings:start&s[]=federal&s[]=black&s[]=list
+# 0 или false - отключает автоматическое скачивание списков
+# 1 - российский список
+# 2 - приватный список оператора из облака VAS Experts
+# 3 - белорусский список
+skatdpi_federal_black_list: 0
+  
+# skatdpi_black_list_redirect_url:
+
+# --- Netflow
+skatdpi_configure_netflow: false
+# 0 или не указано - опция отключена
+# 1 - экспорт статистики по протоколам (номерам портов)
+# 2 - экспорт статистики по направлениям (номерам автономных систем)
+# 4 - экспорт статистики для биллинга
+# 8 - экспорт полной статистики по сессиям
+skatdpi_netflow: 0
+skatdpi_netflow_interface_name: ""
+
+# Netflow collector 'address:port'
+#skatdpi_netflow_full_collector: ""
+
+
+# 0 - экспорт в формате NetFlow5 (значение по умолчанию).
+# 1 - экспорт IPFIX на UDP коллектор.
+# 2 - экспорт IPFIX наTCP коллектор.
+skatdpi_netflow_full_collector_type: 0
+
+# skatdpi_netflow_rate_limit: 0
+
+# --- NAT Logging
+skatdpi_configure_nat_logging: no
+# skatdpi_ipfix_dev: em1
+skatdpi_ipfix_nat_udp_collectors: []
+skatdpi_ipfix_nat_tcp_collectors: []
+
+skatdpi_configure_clickstream: false
+skatdpi_clickstream_ipfix_interface_name:
+skatdpi_clickstream_ipfix_tcp_collectors: []
+
+skatdpi_device_aliases: {}
+
+# BRAS
+# authorization by IP
+skatdpi_enable_auth: 0
+skatdpi_fastpcrf_servers: []
+# - ip:
+#   dev:
+#   port:
+
+skatdpi_enable_ipv6: 0
+
+# Вывод в fastdpi_alert.log трейсов fdpi_cli, fdpi_ctrl и обработки ответов авторизации с fastpcrf.  
+skatdpi_ctrl_trace: 0
+
+# FastPCRF
+skatdpi_fastpcrf_daemon: 1
+skatdpi_fastpcrf_verbose: 1
+
+skatdpi_fastdpi_servers:
+  - ip: 127.0.0.1
+    dev: lo
+    port: 29000
+  
+skatdpi_radius_servers: []
+
+skatdpi_radius_user_name_auth: "login,ip,qinq"
+
+skatdpi_fastpcrf_logs_trace: ""

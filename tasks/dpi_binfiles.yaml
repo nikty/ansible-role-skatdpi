@@ -1,0 +1,23 @@
+- name: Configure aslocal.bin
+  shell: |-
+    cat <<"END" | /bin/as2bin /etc/dpi/aslocal.bin
+    {% for item in skatdpi_aslocal_nets %}
+    {{ item.cidr }} {{ item.as }}
+    {% endfor %}
+    END
+  become: yes
+  when: skatdpi_aslocal_nets | length
+  notify: restart fastdpi
+
+- name: Configure asnum.dscp
+  shell: |
+    cat <<"END" | /bin/as2dscp /etc/dpi/asnum.dscp
+    {% for as in skatdpi_asnum_dscp %}
+    {{ as }} local
+    {% endfor %}
+    END
+  become: yes
+  when: skatdpi_asnum_dscp | length
+  notify: restart fastdpi
+
+

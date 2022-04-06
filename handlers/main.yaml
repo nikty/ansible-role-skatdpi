@@ -1,0 +1,11 @@
+- name: restart fastdpi
+  service:
+    name: fastdpi
+    state: restarted
+  become: yes
+
+- name: restart fastpcrf
+  service:
+    name: fastpcrf
+    state: restarted
+  become: yes

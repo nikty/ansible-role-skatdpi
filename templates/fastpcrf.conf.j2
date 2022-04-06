@@ -1,0 +1,34 @@
+# {{ ansible_managed }}
+
+daemon={{ skatdpi_fastpcrf_daemon }}
+verbose={{ skatdpi_fastpcrf_verbose }}
+
+#default_reject_policing=
+
+#default_reject_whitelist=default
+
+{% if skatdpi_fastdpi_servers | length %}
+# SKATDPI servers
+{% for s in skatdpi_fastdpi_servers %}
+fdpi_server={{ s.ip }}%{{ s.dev }}:{{ s.port }}{% for v in s.params|default([]) %};{{ v }}={{ s.params[v] }}{% endfor %}
+{% endfor %}
+{% else %}
+# fdpi_server=
+{% endif %}
+
+radius_user_name_auth={{ skatdpi_radius_user_name_auth }}
+
+{% if skatdpi_radius_servers | length %}
+# RADIUS servers
+{% for s in skatdpi_radius_servers %}
+radius_server={{ s.secret }}@{{ s.ip }}%{{ s.dev }}:{{ s.port }}
+{% endfor %}
+{% else %}
+# radius_server=
+{% endif %}
+
+fdpi_pqueue_dir=/var/spool/dpi/pcrf
+
+{% if skatdpi_fastpcrf_logs_trace | length %}
+trace={{ skatdpi_fastpcrf_logs_trace }}
+{% endif %}

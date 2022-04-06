@@ -1,0 +1,105 @@
+- name: Add vasexpers rpm key
+  rpm_key:
+    key: "{{ skatdpi_vasexperts_repo_key }}"
+    state: present
+  become: yes
+
+- name: Add vasexperts repo
+  dnf:
+    name: "{{ skatdpi_vasexperts_repo_rpm }}"
+    state: present
+  become: yes
+
+
+- name: Install fastdpi
+  package:
+    name:
+      - fastdpi
+    state: "{{ skatdpi_install_fastdpi | bool | ternary('present', 'absent') }}"
+  become: yes
+
+- name: Install fastpcrf
+  package:
+    name:
+      - fastpcrf
+    state: "{{ skatdpi_install_fastpcrf | bool | ternary('present', 'absent') }}"
+  become: yes
+
+- name: Set fastpcrf service state
+  service:
+    name: fastpcrf
+    # state: "{{ skatdpi_enable_fastpcrf_service | bool | ternary('started', 'stopped') }}"
+    enabled: "{{ skatdpi_enable_fastpcrf_service | bool }}"
+  become: yes
+
+
+- name: Delete default user
+  user:
+    name: "{{ item }}"
+    state: absent
+    remove: yes
+  become: yes
+  loop: "{{ skatdpi_default_users_list }}"
+  when: skatdpi_delete_default_users | bool
+  
+
+- name: Template fastdpi.conf file
+  template:
+    src: fastdpi.conf.j2
+    dest: "{{ skatdpi_conf_dir }}/fastdpi.conf"
+    owner: root
+    group: root
+  become: yes
+  notify: restart fastdpi
+  when: skatdpi_configure_fastdpi|bool
+
+- name: Template fastpcrf.conf
+  template:
+    src: fastpcrf.conf.j2
+    dest: "{{ skatdpi_conf_dir }}/fastpcrf.conf"
+    owner: root
+    group: root
+  become: yes
+  notify: restart fastpcrf
+  when: skatdpi_configure_fastpcrf|bool
+
+
+- name: setup /etc/dpi/protocols.dscp
+  include_tasks: protocols_dscp.yaml
+  when: skatdpi_configure_protocols_dscp | bool
+    
+
+- name: Configure binfiles
+  include_tasks: dpi_binfiles.yaml
+  when: skatdpi_configure_binfiles | bool
+
+
+# Experimental
+- name: Configure policing profiles
+  include_tasks:
+    file: policing_profile.yaml
+  loop: "{{ skatdpi_policing_profiles | default([]) }}"
+
+# Experimental
+- name: Configure NAT service profiles
+  include_tasks:
+    file: nat_service_profile.yaml
+  loop: "{{ skatdpi_nat_service_profiles | default([]) }}"
+
+# - name: Copy Zabbix agent config
+#   copy:
+#     src: zabbix_agent/skatdpi.conf
+#     dest: /etc/zabbix/zabbix_agentd.d/skatdpi.conf
+#   become: yes
+
+
+# TODO: allow connections to zabbix-agent
+# firewall-cmd --add-port 10050/tcp
+# firewall-cmd --runtime-to-permanent
+
+# TODO: allow zabbix-agent in selinux
+# yum install policycoreutils-python-utils
+# semanage permissive -a zabbix_agent_t
+
+      
+  

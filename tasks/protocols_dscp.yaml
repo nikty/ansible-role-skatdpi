@@ -1,0 +1,13 @@
+# TODO:
+# - make idempotent
+
+# - debug:
+#     var: skatdpi_protocols_dscp
+
+- name: Generate protocols.dscp
+  shell:
+    cmd: |
+      cat <<"END" | /usr/bin/lst2dscp /etc/dpi/protocols.dscp
+      {{ skatdpi_protocols_dscp | trim }}
+      END
+  become: yes

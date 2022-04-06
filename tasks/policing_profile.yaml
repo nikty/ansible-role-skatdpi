@@ -1,0 +1,47 @@
+- name: Create profile config
+  set_fact:
+    #policer_profile: "{{ _policer_profile }}"
+    policer_profile: "{{ _policer_profile | from_yaml }}"
+  vars:
+    _policer_profile: |
+      type: HTB
+      {% for dir in [ 'inbound', 'outbound' ] %}
+      {{ dir }}:
+      {% set root_rate = policer_config[dir]['root_rate'] | default( policer_config['root_rate'] ) | default( policer_config['rate'] ) %}
+      {% set root_ceil = policer_config[dir]['root_ceil'] | default( policer_config['root_ceil'] ) | default( policer_config['rate'] ) %}
+        root_rate: {{ root_rate }}
+        root_ceil: {{ root_ceil }}
+        classes:
+      {% for i in range(8) %}
+      {% set class_rate = policer_config[dir]['classes'][i]['rate'] | default( policer_config['classes'][i]['rate'] ) | default( '8bit' ) %}
+      {% set class_ceil = policer_config[dir]['classes'][i]['ceil'] | default( policer_config['classes'][i]['ceil'] ) | default( root_ceil ) %}
+          - class: {{ i }}
+            rate: {{ class_rate }}
+            ceil: {{ class_ceil }}
+      {% endfor %}
+      {% endfor %}
+
+    policer_config: "{{ item.config }}"
+    # policer_config:
+    #   rate: global_in_out_rate/ceil
+    #   root_rate: global_in_out_rate
+    #   root_ceil: global_in_out_ceil
+    #   classes: # in/out settings for classes
+    #     4:
+    #       rate: class_4_in/out_rate
+    #       ceil: class_4_in/out_ceil
+    #   inbound: # per direction settings
+    #     classes:
+    #       3:
+    #         rate: class_3_in_rate
+
+
+- name: Add/remove profile to the system
+  command:
+    cmd: >-
+      {% if item.state == 'present' %}
+      fdpi_ctrl load profile --policing --profile.name '{{ item.name }}' --profile.json '{{ policer_profile | to_json }}'
+      {% elif item.state == 'absent' %}
+      fdpi_ctrl del profile --policing --profile.name '{{ item.name }}'
+      {% endif %}
+  become: yes
