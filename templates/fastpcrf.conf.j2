@@ -32,3 +32,7 @@ fdpi_pqueue_dir=/var/spool/dpi/pcrf
 {% if skatdpi_fastpcrf_logs_trace | length %}
 trace={{ skatdpi_fastpcrf_logs_trace }}
 {% endif %}
+
+{% for el in skatdpi_fastpcrf_coa_clients | default([]) %}
+coa_client={{ el.secret }}@{{ el.address }}%{{ el.dev }}:{{ el.port }}
+{% endfor %}

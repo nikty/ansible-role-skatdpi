@@ -89,6 +89,13 @@ Dict keys:
 
 `skatdpi_fastdpi_servers`: List of dicts describing fastdpi servers. This variable is used to setup `fastpcrf.conf: fdpi_server` variables
 
+`skatdpi_fastpcrf_coa_clients`: List of dicts describind coa_clients.
+Dict keys:
+* secret
+* address
+* dev
+* port
+
 https://wiki.vasexperts.ru/doku.php?id=en:dpi:dpi_options:opt_bras:bras_steps:radius_auth_fastpcrf_setup:start
 
 Dict keys:
