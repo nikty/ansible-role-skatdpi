@@ -3,6 +3,10 @@
 daemon={{ skatdpi_fastpcrf_daemon }}
 verbose={{ skatdpi_fastpcrf_verbose }}
 
+{% if skatdpi_fastpcrf_auth_server_port is defined %}
+auth_server_port={{ skatdpi_fastpcrf_auth_server_port }}
+{% endif %}  
+
 #default_reject_policing=
 
 #default_reject_whitelist=default
@@ -11,9 +15,8 @@ verbose={{ skatdpi_fastpcrf_verbose }}
 # SKATDPI servers
 {% for s in skatdpi_fastdpi_servers %}
 fdpi_server={{ s.ip }}%{{ s.dev }}:{{ s.port }}{% for v in s.params|default([]) %};{{ v }}={{ s.params[v] }}{% endfor %}
+
 {% endfor %}
-{% else %}
-# fdpi_server=
 {% endif %}
 
 radius_user_name_auth={{ skatdpi_radius_user_name_auth }}
@@ -23,8 +26,6 @@ radius_user_name_auth={{ skatdpi_radius_user_name_auth }}
 {% for s in skatdpi_radius_servers %}
 radius_server={{ s.secret }}@{{ s.ip }}%{{ s.dev }}:{{ s.port }}
 {% endfor %}
-{% else %}
-# radius_server=
 {% endif %}
 
 fdpi_pqueue_dir=/var/spool/dpi/pcrf

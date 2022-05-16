@@ -117,6 +117,9 @@ Dict keys:
 
 `skatdpi_fastpcrf_logs_trace`: `fastpcrf.conf: trace`
 
+`skatdpi_fastpcrf_auth_server_port`: `fastpcrf.conf: auth_server_port` (Default: not set)
+
+
 ## Experimental
 
 `skatdpi_configure_protocols_dscp`: (bool) Whether to configure `protocols.dscp`
