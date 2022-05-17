@@ -113,7 +113,7 @@ Dict keys:
 * dev
 * port
 
-`skatdpi_radius_user_name_auth`: `fastpcrf.conf: radius_user_name_auth`
+`skatdpi_fastpcrf_radius_user_name_auth`: `fastpcrf.conf: radius_user_name_auth`
 
 `skatdpi_fastpcrf_logs_trace`: `fastpcrf.conf: trace`
 

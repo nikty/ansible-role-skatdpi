@@ -7,19 +7,22 @@ verbose={{ skatdpi_fastpcrf_verbose }}
 auth_server_port={{ skatdpi_fastpcrf_auth_server_port }}
 {% endif %}  
 
-#default_reject_policing=
-
-#default_reject_whitelist=default
+{% if skatdpi_fastpcrf_default_reject_policing is defined %}
+default_reject_policing={{ skatdpi_fastpcrf_default_reject_policing }}
+{% endif %}
+{% if skatdpi_fastpcrf_default_reject_whitelist is defined %}
+default_reject_whitelist={{ skatdpi_fastpcrf_default_reject_whitelist }}
+{% endif %}
 
 {% if skatdpi_fastdpi_servers | length %}
 # SKATDPI servers
 {% for s in skatdpi_fastdpi_servers %}
 fdpi_server={{ s.ip }}%{{ s.dev }}:{{ s.port }}{% for v in s.params|default([]) %};{{ v }}={{ s.params[v] }}{% endfor %}
-
+  
 {% endfor %}
 {% endif %}
 
-radius_user_name_auth={{ skatdpi_radius_user_name_auth }}
+radius_user_name_auth={{ skatdpi_fastpcrf_radius_user_name_auth }}
 
 {% if skatdpi_radius_servers | length %}
 # RADIUS servers

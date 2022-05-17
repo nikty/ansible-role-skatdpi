@@ -92,6 +92,6 @@ skatdpi_fastdpi_servers:
   
 skatdpi_radius_servers: []
 
-skatdpi_radius_user_name_auth: "login,ip,qinq"
+skatdpi_fastpcrf_radius_user_name_auth: "login,ip,qinq"
 
 skatdpi_fastpcrf_logs_trace: ""
