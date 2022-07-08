@@ -1,0 +1,15 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+platforms:
+  - name: instance
+    box: centos/8
+provisioner:
+  name: ansible
+  options:
+    # Don't restart fastdpi, because it'll not start on default install without a license.
+    extra-vars: restart_fastdpi=false
+verifier:
+  name: ansible

@@ -3,6 +3,7 @@
     name: fastdpi
     state: restarted
   become: yes
+  when: restart_fastdpi | default(True) | bool
 
 - name: restart fastpcrf
   service:

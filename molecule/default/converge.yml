@@ -1,0 +1,18 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+
+    - name: Fix CentOS mirrors (hacky)
+      shell:
+        cmd: |
+          sed -i 's@^mirrorlist@#mirrorlist@; s@^#baseurl=@baseurl=@; s@^baseurl=http://mirror.centos.org@baseurl=http://vault.centos.org@' /etc/yum.repos.d/CentOS-Linux-*
+      become: yes
+      when:
+        - ansible_distribution | lower == "centos"
+        - ansible_distribution_major_version == '8'
+  
+
+    - name: "Include skatdpi"
+      include_role:
+        name: "skatdpi"

@@ -62,10 +62,13 @@ dpdk_device={{ k ~ ":" ~ v }}
 {% endfor %}
 {% endif %}
 
-# Bridge config 
+# Bridge config
+{% if skatdpi_devices_in | length %}
 in_dev={{ skatdpi_devices_in | map("replace", ":", "-") | join(':') }}
+{% endif %}
+{% if skatdpi_devices_out | length %}
 out_dev={{ skatdpi_devices_out | map("replace", ":", "-") |  join(':') }}
-
+{% endif %}
 
 # "L3 BRAS"
 enable_auth={{ skatdpi_enable_auth }}

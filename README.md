@@ -1,6 +1,11 @@
-# Vasexperts SKAT DPI
+Vasexperts SKAT DPI
+===================
 
-# Role variables
+A role to setup SkatDPI host.
+
+
+Role variables
+--------------
 
 
 `skatdpi_install_fastpcrf`: Install fastpcrf package
@@ -120,7 +125,7 @@ Dict keys:
 `skatdpi_fastpcrf_auth_server_port`: `fastpcrf.conf: auth_server_port` (Default: not set)
 
 
-## Experimental
+### Experimental
 
 `skatdpi_configure_protocols_dscp`: (bool) Whether to configure `protocols.dscp`
 

@@ -67,6 +67,8 @@ skatdpi_clickstream_ipfix_interface_name:
 skatdpi_clickstream_ipfix_tcp_collectors: []
 
 skatdpi_device_aliases: {}
+skatdpi_devices_in: []
+skatdpi_devices_out: []
 
 # BRAS
 # authorization by IP
