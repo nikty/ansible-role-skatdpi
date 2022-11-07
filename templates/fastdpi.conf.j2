@@ -85,3 +85,12 @@ ipv6={{ skatdpi_enable_ipv6 }}
 
 ctrl_trace={{ skatdpi_ctrl_trace }}
 
+{% if skatdpi_ajb_reserved is defined and skatdpi_ajb_reserved is not none %}
+ajb_reserved={{ skatdpi_ajb_reserved }}
+{% endif %}
+{% if skatdpi_ajb_udpi_path is defined and skatdpi_ajb_udpi_path is not none %}
+ajb_udpi_path={{ skatdpi_ajb_udpi_path }}
+{% endif %}
+{% if skatdpi_ajb_save_ip is defined and skatdpi_ajb_save_ip is not none %}
+ajb_save_ip={{ skatdpi_ajb_save_ip }}
+{% endif %}

@@ -56,6 +56,19 @@ skatdpi_netflow_full_collector_type: 0
 
 # skatdpi_netflow_rate_limit: 0
 
+# --- PCAP traffic dump
+
+### Allocate buffer at start up is 1.
+#skatdpi_ajb_reserved: 0
+
+### Where to save logs
+#skatdpi_ajb_udpi_path: /var/dump/dpi
+
+### Save thaffic for selected addresses
+### CIDR; use 0.0.0.0/0 to save all traffic
+#skatdpi_ajb_save_ip: 192.0.2.1
+
+
 # --- NAT Logging
 skatdpi_configure_nat_logging: no
 # skatdpi_ipfix_dev: em1
