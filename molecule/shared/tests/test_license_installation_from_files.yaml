@@ -1,0 +1,9 @@
+- hosts: all
+  become: yes
+  vars:
+    skatdpi_install_license: yes
+    skatdpi_install_license_from_file: yes
+    skatdpi_license_file: "../files/{{ inventory_hostname }}/license.lic"
+    skatdpi_license_signature_file: "../files/{{ inventory_hostname }}/license.sig"
+  roles:
+    - role: skatdpi

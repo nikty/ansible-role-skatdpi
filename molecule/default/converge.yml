@@ -1,6 +1,7 @@
 ---
 - name: Converge
   hosts: all
+  become: yes
   tasks:
 
     - name: Fix CentOS mirrors (hacky)

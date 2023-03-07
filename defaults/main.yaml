@@ -12,6 +12,19 @@ skatdpi_vasexperts_repo_key: "http://vasexperts.ru/centos/RPM-GPG-KEY-vasexperts
 
 skatdpi_conf_dir: /etc/dpi/
 
+# Whether to install licene
+skatdpi_install_license: false
+# Base64 encoded license file contents
+skatdpi_license_base64: ""
+# Base64 encoded licence signature file contents
+skatdpi_license_signature_base64: ""
+
+# Whether to copy license file instead of templating Base64-encoded variable
+skatdpi_install_license_from_file: false
+# It's up to you to point variables below to license files on your disk
+# skatdpi_license_file: "{{ inventory_hostname }}/fastdpi.lic"
+# skatdpi_license_signature_file: "{{ inventory_hostname }}/fastdpi.sig }}"
+
 skatdpi_configure_protocols_dscp: no
 skatdpi_configure_binfiles: no
 

@@ -1,0 +1,9 @@
+#skatdpi_install_license: yes
+
+skatdpi_license_base64: |
+  YmFzZTY0IGVuY29kZWQgbGljZW5jZQo=
+skatdpi_license_signature_base64: |
+  YmFzZTY0IGVuY29kZWQgbGljZW5jZSBzaWduYXR1cmUK
+
+# skatdpi_license_file: "../shared/files/{{ inventory_hostname }}/license.lic"
+# skatdpi_license_signature_file: "../shared/files/{{ inventory_hostname }}/license.sig"

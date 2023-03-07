@@ -32,7 +32,6 @@
     enabled: "{{ skatdpi_enable_fastpcrf_service | bool }}"
   become: yes
 
-
 - name: Delete default user
   user:
     name: "{{ item }}"
@@ -41,7 +40,50 @@
   become: yes
   loop: "{{ skatdpi_default_users_list }}"
   when: skatdpi_delete_default_users | bool
-  
+
+- name: Install license file (from base64 encoded variable)
+  copy:
+    content: "{{ skatdpi_license_base64 | b64decode }}"
+    dest: "{{ skatdpi_conf_dir }}/fastdpi.lic"
+    mode: 0644
+  when: >-
+    skatdpi_install_license
+    and not skatdpi_install_license_from_file
+  tags:
+    - license
+
+- name: Install license signature file (from base64 encoded variable)
+  copy:
+    content: "{{ skatdpi_license_signature_base64 | b64decode }}"
+    dest: "{{ skatdpi_conf_dir }}/fastdpi.sig"
+    mode: 0644
+  when: >-
+    skatdpi_install_license
+    and not skatdpi_install_license_from_file
+  tags:
+    - license
+
+- name: Install license file (from file)
+  copy:
+    src: "{{ skatdpi_license_file }}"
+    dest: "{{ skatdpi_conf_dir }}/fastdpi.lic"
+    mode: 0644
+  when: >-
+    skatdpi_install_license and
+    skatdpi_install_license_from_file
+  tags:
+    - license
+
+- name: Install license signature file (from file)
+  copy:
+    src: "{{ skatdpi_license_signature_file }}"
+    dest: "{{ skatdpi_conf_dir }}/fastdpi.sig"
+    mode: 0644
+  when: >-
+    skatdpi_install_license and
+    skatdpi_install_license_from_file
+  tags:
+    - license
 
 - name: Template fastdpi.conf file
   template:

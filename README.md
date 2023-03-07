@@ -7,6 +7,17 @@ A role to setup SkatDPI host.
 Role variables
 --------------
 
+`skatdpi_install_license`: Wheher to install license (Default: false)
+
+`skatdpi_license_base64`: Base64 encoded license contents
+
+`skatdpi_license_signature_base64`: Base64 encoded license signature contents
+
+`skatdpi_install_license_from_file`: Whether to copy license file instead of templating Base64-encoded variable (Default: false)
+
+`skatdpi_license_file`: Path to license file on controller
+
+`skatdpi_license_signature_file`: Path to license signature file on controller
 
 `skatdpi_install_fastpcrf`: Install fastpcrf package
 

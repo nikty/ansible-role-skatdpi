@@ -1,0 +1,7 @@
+- hosts: all
+  become: yes
+  vars:
+    skatdpi_install_license: yes
+    skatdpi_install_license_from_file: false
+  roles:
+    - role: skatdpi

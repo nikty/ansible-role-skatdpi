@@ -8,8 +8,15 @@ platforms:
     box: centos/8
 provisioner:
   name: ansible
+  playbooks:
+    verify: "../shared/tests/${TEST_VERIFY_PLAYBOOK:-../../default/verify.yml}"
   options:
     # Don't restart fastdpi, because it'll not start on default install without a license.
     extra-vars: restart_fastdpi=false
+  inventory:
+    links:
+      host_vars: ../shared/inventory/host_vars
+  # ansible_args:
+  #   - "-v"
 verifier:
   name: ansible
