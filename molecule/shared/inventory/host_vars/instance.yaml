@@ -7,3 +7,72 @@ skatdpi_license_signature_base64: |
 
 # skatdpi_license_file: "../shared/files/{{ inventory_hostname }}/license.lic"
 # skatdpi_license_signature_file: "../shared/files/{{ inventory_hostname }}/license.sig"
+
+skatdpi_fastdpi_options:
+  enable_auth:
+    value: 1
+  ctrl_dev:
+    value: eno1
+  scale_factor:
+    value: 10
+  black_list_redirect:
+    value: http://example.com
+  federal_black_list:
+    value: 1
+  netflow:
+    value: 8
+  netflow_full_collector:
+    value: "192.0.2.1:10001"
+  netflow_full_collector_type:
+    value: 1 # IPFIX/UDP
+  netflow_dev:
+    value: eno1
+  netflow_rate_limit:
+    value: 120
+  netflow_timeout:
+    value: 10
+  ipfix_dev:
+    value: eno1
+  ipfix_nat_udp_collectors:
+    value:
+      - ip: 192.0.2.2
+        port: 10002
+      - ip: 192.0.2.3
+        port: 10003
+  ipfix_nat_tcp_collectors:
+    value:
+      - ip: 192.0.2.4
+        port: 10004
+      - ip: 192.0.2.5
+        port: 10005
+  ipfix_tcp_collectors:
+    value:
+      - ip: 192.0.2.6
+        port: 10006
+  auth_servers:
+    value:
+      - ip: 192.0.2.7
+        interface: eno1
+        port: 10007
+      - ip: 192.0.2.8
+        interface: eno1
+        port: 10008
+  ipv6:
+    value: 1
+  in_dev:
+    value: [ "01:00.0", "01:00.2", "02:00.0", "02:00.2" ]
+  out_dev:
+    value: [ "01:00.1", "01:00.3", "02:00.1", "02:00.3" ]
+  ajb_reserved:
+    value: 1
+  mem_ssl_parsers:
+    value: 3840000
+  mem_tracking_flow:
+    value: 80000000
+  mem_tracking_ip:
+    value: 80000000
+  foo:
+    value: bar
+    comment: "Dummy option"
+  bar:
+    value: qux

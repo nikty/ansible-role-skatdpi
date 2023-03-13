@@ -1,96 +1,46 @@
 # {{ ansible_managed }}
-
-# Internal DB ("user data repository")
-udr={{ skatdpi_udr }}
-ctrl_port={{ skatdpi_ctrl_port }}
-ctrl_dev={{ skatdpi_ctrl_dev }}
-
-{% if skatdpi_scale_factor is defined %}
-# Scale factor is about 1 for every 1 Gigabit of bandwidth
-scale_factor={{ skatdpi_scale_factor }}
+{% set options = skatdpi_fastdpi_options.copy() %}
+{% if options.ipfix_nat_udp_collectors.value is defined and options.ipfix_nat_udp_collectors.value is sequence and options.ipfix_nat_udp_collectors.value is not string %}
+{%   set ipfix_nat_udp_collectors = [] %}
+{%   for s in options.ipfix_nat_udp_collectors.value %}
+{%     set _ = ipfix_nat_udp_collectors.append( s.ip ~ ":" ~ s.port ) %}
+{%   endfor %}
+{%  set options = options | combine({ "ipfix_nat_udp_collectors": { "value": ipfix_nat_udp_collectors | join(",") } }, recursive=True) %}
+{% endif %}
+{% if options.ipfix_nat_tcp_collectors.value is defined and options.ipfix_nat_tcp_collectors.value is sequence and options.ipfix_nat_tcp_collectors.value is not string %}
+{%   set ipfix_nat_tcp_collectors = [] %}
+{%   for s in options.ipfix_nat_tcp_collectors.value %}
+{%     set _ = ipfix_nat_tcp_collectors.append( s.ip ~ ":" ~ s.port ) %}
+{%   endfor %}
+{%  set options = options | combine({ "ipfix_nat_tcp_collectors": { "value": ipfix_nat_tcp_collectors | join(",") } }, recursive=True) %}
+{% endif %}
+{% if options.ipfix_tcp_collectors.value is defined and options.ipfix_tcp_collectors.value is sequence and options.ipfix_tcp_collectors.value is not string %}
+{%   set ipfix_tcp_collectors = [] %}
+{%   for s in options.ipfix_tcp_collectors.value %}
+{%     set _ = ipfix_tcp_collectors.append( s.ip ~ ":" ~ s.port ) %}
+{%   endfor %}
+{%  set options = options | combine({ "ipfix_tcp_collectors": { "value": ipfix_tcp_collectors | join(",") } }, recursive=True) %}
+{% endif %}
+{% if options.auth_servers.value is defined and options.auth_servers.value is sequence and options.auth_servers.value is not string %}
+{%   set auth_servers = [] %}
+{%   for s in options.auth_servers.value %}
+{%     set _ = auth_servers.append( s.ip ~ "%" ~ s.interface ~ ":" ~ s.port ) %}
+{%   endfor %}
+{%  set options = options | combine({ "auth_servers": { "value": auth_servers | join(",") } }, recursive=True) %}
+{% endif %}
+{% if options.in_dev.value is defined and options.in_dev.value is sequence and options.in_dev.value is not string %}
+{%  set options = options | combine({ "in_dev": { "value": options.in_dev.value | map("replace", ":", "-") | join(':') } }, recursive=True) %}
+{% endif %}
+{% if options.out_dev.value is defined and options.out_dev.value is sequence and options.out_dev.value is not string %}
+{%  set options = options | combine({ "out_dev": { "value": options.out_dev.value | map("replace", ":", "-") | join(':') } }, recursive=True) %}
 {% endif %}
 
-{% if skatdpi_num_threads is defined %}
-num_threads={{ skatdpi_num_threads }}
-{% endif %}
+{% for option, v in options.items() %}
+{%   if v.value is defined and v.value is not none %}
+{%     if skatdpi_fastdpi_conf_comments | default(True) %}
+# {{ v.comment | default(skatdpi_fastdpi_options_info[option]['comment']) | default("") }}
+{%     endif %}
+{{ option }}={{ v.value | default(skatdpi_fastdpi_options_default[option].value) }}
 
-{% if skatdpi_configure_censorship %}
-# RKN Censorship
-federal_black_list={{ skatdpi_federal_black_list }}
-{%   if skatdpi_black_list_redirect_url is not none %}
-black_list_redirect={{ skatdpi_black_list_redirect_url }}
-{%   else %}
-# black_list_redirect=
 {%   endif %}
-{% endif %}
-
-
-{% if skatdpi_configure_netflow %}
-# Netflow
-netflow={{ skatdpi_netflow }}
-netflow_dev={{ skatdpi_netflow_dev }}
-netflow_full_collector_type={{ skatdpi_netflow_full_collector_type }}
-netflow_full_collector={{ skatdpi_netflow_full_collector }}
-netflow_rate_limit={{ skatdpi_netflow_rate_limit }}  
-{% endif %}
-
-
-{% if skatdpi_configure_nat_logging %}
-# NAT Logging
-ipfix_dev={{ skatdpi_ipfix_dev }}
-{% if skatdpi_ipfix_nat_udp_collectors | length %}
-ipfix_nat_udp_collectors={{ skatdpi_ipfix_nat_udp_collectors | join(",") }}
-{% endif %}
-{% if skatdpi_ipfix_nat_tcp_collectors | length %}
-ipfix_nat_tcp_collectors={{ skatdpi_ipfix_nat_tcp_collectors | join(",") }}
-{% endif %}
-{% endif %}
-
-{% if skatdpi_configure_clickstream %}
-# Clickstream 
-ipfix_dev={{ skatdpi_clickstream_ipfix_interface_name }}
-ipfix_tcp_collectors={{ skatdpi_clickstream_ipfix_tcp_collectors | join(',') }}
-{% endif %}
-
-
-# Devices
-{% if skatdpi_device_aliases %}
-# Device aliases 
-# dpdk_device=name:bus:dpdk-device-description 
-{%- for k, v in skatdpi_device_aliases.items() %}
-dpdk_device={{ k ~ ":" ~ v }} 
 {% endfor %}
-{% endif %}
-
-# Bridge config
-{% if skatdpi_devices_in | length %}
-in_dev={{ skatdpi_devices_in | map("replace", ":", "-") | join(':') }}
-{% endif %}
-{% if skatdpi_devices_out | length %}
-out_dev={{ skatdpi_devices_out | map("replace", ":", "-") |  join(':') }}
-{% endif %}
-
-# "L3 BRAS"
-enable_auth={{ skatdpi_enable_auth }}
-{% if skatdpi_fastpcrf_servers | length %}
-# Fastpcrf servers
-auth_servers={% for s in skatdpi_fastpcrf_servers -%}
-{% if not loop.first %},{% endif %}{{ s.ip }}%{{ s.dev }}:{{ s.port }}
-{%- endfor %}
-{% endif %}
-
-
-# IPv6
-ipv6={{ skatdpi_enable_ipv6 }}
-
-ctrl_trace={{ skatdpi_ctrl_trace }}
-
-{% if skatdpi_ajb_reserved is defined and skatdpi_ajb_reserved is not none %}
-ajb_reserved={{ skatdpi_ajb_reserved }}
-{% endif %}
-{% if skatdpi_ajb_udpi_path is defined and skatdpi_ajb_udpi_path is not none %}
-ajb_udpi_path={{ skatdpi_ajb_udpi_path }}
-{% endif %}
-{% if skatdpi_ajb_save_ip is defined and skatdpi_ajb_save_ip is not none %}
-ajb_save_ip={{ skatdpi_ajb_save_ip }}
-{% endif %}

@@ -1,3 +1,7 @@
+- name: Merge default values for fastdpi.conf
+  set_fact:
+    skatdpi_fastdpi_options: "{{ skatdpi_fastdpi_options_default | combine(skatdpi_fastdpi_options, recursive=True) }}"
+
 - name: Add vasexpers rpm key
   rpm_key:
     key: "{{ skatdpi_vasexperts_repo_key }}"
@@ -91,6 +95,7 @@
     dest: "{{ skatdpi_conf_dir }}/fastdpi.conf"
     owner: root
     group: root
+    #validate: fastdpi -p -c %s
   become: yes
   notify: restart fastdpi
   when: skatdpi_configure_fastdpi|bool
