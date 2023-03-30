@@ -54,6 +54,9 @@ skatdpi_fastpcrf_logs_trace: ""
 # Whether to add comments to configuration file
 skatdpi_fastdpi_conf_comments: yes
 
+# fastdpi.conf options
+skatdpi_fastdpi_options: {}
+
 # Default values
 skatdpi_fastdpi_options_default:
   udr:
